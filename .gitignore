@@ -6,3 +6,5 @@ dist
 .idea/
 noconsole
 noconsole/
+__pycache__
+__pycache__/
