@@ -32,4 +32,4 @@ exe = EXE(pyz,
           upx=True,
           upx_exclude=[],
           runtime_tmpdir=None,
-          console=False, icon='res/upldr-icon.ico' )
+          console=True, icon='res/upldr-icon.ico' )

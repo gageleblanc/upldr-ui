@@ -1,0 +1,4 @@
+clilib>=1.9.10
+requests
+pyqt5
+upldr>=2.1.8

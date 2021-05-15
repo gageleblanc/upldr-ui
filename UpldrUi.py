@@ -189,7 +189,7 @@ class MainWindowUIClass(QObject):
         self.uploadButton.clicked.connect(self.uploadSlot)
         self.fileNameEdit.returnPressed.connect(self.returnPressedSlot)
         self.actionSettings.triggered.connect(self.openSettingsSlot)
-        self.downloadRemoteComboBox.currentTextChanged.connect(self._build_tree)
+        self.downloadRemoteComboBox.currentTextChanged.connect(self.build_tree)
         self.pushButton_2.clicked.connect(self._refresh_dropdown)
         self.downloadBrowseButton.clicked.connect(self.browseDownloadSlot)
         self.downloadButton.clicked.connect(self.download_file)
@@ -285,28 +285,35 @@ class MainWindowUIClass(QObject):
             self.log.fatal(type_error)
             exit(1)
 
+    def build_tree(self):
+        self._update_configs()
+        self._build_tree()
+
     def _build_tree(self):
         self.treeView.setHeaderLabel("Files")
-        self._update_indexes()
+        # self._update_configs()
         self.treeView.clear()
         selected_remote = self.downloadRemoteComboBox.currentText()
         items = []
-        for key, values in self.index_object.indexes[selected_remote].items():
-            item = QTreeWidgetItem([key])
-            item.setFlags(item.flags() & ~QtCore.Qt.ItemIsSelectable)
-            for tag, files in values.items():
-                child = QTreeWidgetItem([tag])
-                child.setFlags(child.flags() & ~QtCore.Qt.ItemIsSelectable)
-                for file in files:
-                    file_item = QTreeWidgetItem([file])
-                    file_item.setData(0, QtCore.Qt.UserRole, "%s/%s/%s/%s" % (selected_remote, key, tag, file))
-                    child.addChild(file_item)
-                item.addChild(child)
-            items.append(item)
-        self.treeView.insertTopLevelItems(0, items)
-        self.treeView.expandAll()
+        if isinstance(self.index_object.indexes, dict):
+            if selected_remote in self.index_object.indexes:
+                for key, values in self.index_object.indexes[selected_remote].items():
+                    item = QTreeWidgetItem([key])
+                    item.setFlags(item.flags() & ~QtCore.Qt.ItemIsSelectable)
+                    for tag, files in values.items():
+                        child = QTreeWidgetItem([tag])
+                        child.setFlags(child.flags() & ~QtCore.Qt.ItemIsSelectable)
+                        for file in files:
+                            file_item = QTreeWidgetItem([file])
+                            file_item.setData(0, QtCore.Qt.UserRole, "%s/%s/%s/%s" % (selected_remote, key, tag, file))
+                            child.addChild(file_item)
+                        item.addChild(child)
+                    items.append(item)
+                self.treeView.insertTopLevelItems(0, items)
+                self.treeView.expandAll()
 
     def _refresh_dropdown(self):
+        self._update_configs()
         self.downloadRemoteComboBox.currentTextChanged.disconnect()
         self.downloadRemoteComboBox.clear()
         if isinstance(self.config.remotes, dict):
@@ -314,6 +321,11 @@ class MainWindowUIClass(QObject):
                 self.downloadRemoteComboBox.addItem(name)
         self._build_tree()
         self.downloadRemoteComboBox.currentTextChanged.connect(self._build_tree)
+
+    def _update_configs(self):
+        self._update_indexes()
+        self.config.reload()
+        self.index_object.reload()
 
     def debugPrint(self, msg):
         '''Print the message in the text edit at the bottom of the

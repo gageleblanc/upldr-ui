@@ -8,3 +8,5 @@ noconsole
 noconsole/
 __pycache__
 __pycache__/
+venv
+venv/
