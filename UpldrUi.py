@@ -37,7 +37,7 @@ class MainWindowUIClass(QObject):
 
     def setupUi(self, Upldr):
         Upldr.setObjectName("Upldr")
-        Upldr.resize(892, 581)
+        Upldr.resize(892, 1200)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)

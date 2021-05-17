@@ -15,9 +15,9 @@ class SettingsWidgetUIClass(QtWidgets.QWidget):
 
     def setupUi(self, UpldrSettings):
         UpldrSettings.setObjectName("UpldrSettings")
-        UpldrSettings.resize(800, 600)
-        UpldrSettings.setMinimumSize(QtCore.QSize(800, 600))
-        UpldrSettings.setBaseSize(QtCore.QSize(800, 600))
+        UpldrSettings.resize(800, 550)
+        UpldrSettings.setMinimumSize(QtCore.QSize(800, 550))
+        UpldrSettings.setBaseSize(QtCore.QSize(800, 550))
         self.gridLayout_4 = QtWidgets.QGridLayout(UpldrSettings)
         self.gridLayout_4.setObjectName("gridLayout_4")
         self.defaultRemoteBox = QtWidgets.QGroupBox(UpldrSettings)
